@@ -1,0 +1,16 @@
+{
+    "name": "alexey/learn-api-chat",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "al.barinov",
+            "email": "barinulka@yandex.ru"
+        }
+    ],
+    "require": {}
+}
