@@ -2,23 +2,60 @@
 
 declare(strict_types= 1);
 
+use App\Entity\Post\Post;
 use App\Entity\User\User;
 use App\Entity\Person\Name;
-use App\Helper\ExceptionHandler;
-use App\Repository\UserRepository\InMemoryUserRepository;
+use App\Entity\Comment\Comment;
 
 require_once 'vendor/autoload.php';
 require_once 'functions.php';
 
-$name = new Name('Alexey', 'Barinulka');
-$user = new User(1, $name, 'login');
+$faker = Faker\Factory::create('ru_RU');
 
-$repository = new InMemoryUserRepository();
+$name = new Name(
+    $faker->firstName(),
+    $faker->lastName(),
+);
 
-try {
-    $repository->save($user);
+$user = new User(
+    $faker->randomDigitNotNull(),
+    $name,
+    $faker->userName()
+);
 
-    echo $repository->getUser(1);
-} catch (\Throwable $e) {
-    (new ExceptionHandler())->handle($e);
+$cliRoute = $argv[1] ?? null;
+
+switch ($cliRoute) {
+    case 'user':
+        echo $user;
+        break;
+    case 'post':
+        $post = new Post(
+            $faker->randomDigitNotNull(),
+            $user,
+            $faker->sentence(),
+            $faker->paragraph()
+        );
+
+        echo $post;
+        break;
+    case 'comment':
+        $post = new Post(
+            $faker->randomDigitNotNull(),
+            $user,
+            $faker->sentence(),
+            $faker->paragraph()
+        );
+        
+        $comment = new Comment(
+            $faker->randomDigitNotNull(),
+            $user,
+            $post,
+            $faker->sentence(),
+        );
+
+        echo $comment;
+        break;
+    default:
+        echo 'Ошибка. Попробуйте комманду user, post или comment';
 }

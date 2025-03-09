@@ -15,6 +15,11 @@ class Comment
 
     }
 
+    public function __tostring(): string
+    {
+        return sprintf('%s оставил комментарий: %s', $this->user, $this->comment);
+    }
+
     public function getId(): int
     {
         return $this->id;
