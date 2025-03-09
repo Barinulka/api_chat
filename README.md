@@ -3,7 +3,7 @@
 ## Развертывание проекта
 > Установить зависимости
 ```
-composer install
+composer update
 ```
 > Запустить docker
 ``` 
