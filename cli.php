@@ -9,7 +9,7 @@ use App\Repository\UserRepository\SqliteUserRepository;
 
 require_once 'vendor/autoload.php';
 
-set_exception_handler(function (Exception $e) {
+set_exception_handler(function (\Throwable $e) {
     (new ExceptionHandler())->handle($e);
     exit;
 });
@@ -20,7 +20,8 @@ $userRepository = new SqliteUserRepository($connection);
 
 
 try {
-    $userRepository->save(new User(UUID::randomUUID(), new Name('Test', 'User'), 'testLogin'));
+    // $userRepository->save(new User(UUID::randomUUID(), new Name('Alexey', 'Nikolaevich'), 'al.barinov'));
+   echo $userRepository->get(new UUID('32bdf424-b71a-40c5-b1ac-df8ee5f5dedd'));
 } catch (\Throwable $e) {
     (new ExceptionHandler())->handle($e);
 }

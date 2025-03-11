@@ -18,7 +18,7 @@ class User
 
     public function __tostring(): string
     {
-        return sprintf('Пользователь #%d %s с логином %s', $this->id, $this->userName, $this->login) . PHP_EOL;
+        return sprintf('Пользователь %s с логином %s', $this->userName, $this->login) . PHP_EOL;
     }
 
     public function getId(): UUID

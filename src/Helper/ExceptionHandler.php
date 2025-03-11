@@ -17,7 +17,7 @@ class ExceptionHandler
             $response['code'] = $e->getCode();
             $response['data'] = $e->getData() ?? [];
         } elseif ($e instanceof PDOException) {
-            $response['code'] = 400;
+            $response['code'] = 500;
             $response['message'] = 'Ошибка базы данных';
             $response['data'] = ['code' => sprintf('SQLSTATE[%d]', $e->getCode())];
         } else {
@@ -31,7 +31,7 @@ class ExceptionHandler
     private function setBaseResponse(Throwable $e): array
     {
        return [
-            'code' => $e->getCode() ?? 500,
+            'code' => (0 == $e->getCode()) ? 500 : $e->getCode(),
             'message' => $e->getMessage() ?? 'Что-то пошло не так',
             'data' => []
         ];

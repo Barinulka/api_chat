@@ -1,6 +1,8 @@
 <?php 
 namespace App\Entity;
 
+use App\Exception\InvalidArgumentException;
+
 class UUID
 {
     public function __construct(
