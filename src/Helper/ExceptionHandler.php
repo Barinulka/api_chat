@@ -2,6 +2,7 @@
 namespace App\Helper;
 
 use App\Exception\BaseAppException;
+use PDOException;
 use Throwable;
 
 class ExceptionHandler
@@ -13,15 +14,18 @@ class ExceptionHandler
 
         // Вспомогательные данные добавляются, если это BaseAppException
         if ($e instanceof BaseAppException) {
-           $response = $this->addDataToResponse($response, $e->getData());
-        } 
+            $response['code'] = $e->getCode();
+            $response['data'] = $e->getData() ?? [];
+        } elseif ($e instanceof PDOException) {
+            $response['code'] = 400;
+            $response['message'] = 'Ошибка базы данных';
+            $response['data'] = ['code' => sprintf('SQLSTATE[%d]', $e->getCode())];
+        } else {
+            $response['message'] = 'Непредвиденная ошибка. Попробуйте позже';
+            $response['data'] = ['type' => get_class($e)];
+        }
 
-        http_response_code($e->getCode());
-        header('Content-Type: application/json; charset=utf8');
-
-        echo json_encode($response, JSON_UNESCAPED_UNICODE);
-
-        exit;
+        $this->printResponse($response);
     }
 
     private function setBaseResponse(Throwable $e): array
@@ -29,15 +33,15 @@ class ExceptionHandler
        return [
             'code' => $e->getCode() ?? 500,
             'message' => $e->getMessage() ?? 'Что-то пошло не так',
+            'data' => []
         ];
     }
 
-    private function addDataToResponse(array $response, array $data): array
+    private function printResponse(array $response): void
     {
-        if (!empty($data)) {
-            $response['data'] = $data;
-        }
+        http_response_code($response['code']);
+        header('Content-Type: application/json; charset=utf8');
 
-        return $response;
+        echo json_encode($response, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
     }
 }
