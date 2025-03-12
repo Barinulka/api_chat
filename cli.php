@@ -2,9 +2,7 @@
 
 declare(strict_types= 1);
 
-use App\Entity\Comment\Comment;
 use App\Entity\UUID;
-use App\Entity\Post\Post;
 use App\Command\Arguments;
 use App\Helper\ExceptionHandler;
 use App\Command\CreateUserCommand;
@@ -24,8 +22,8 @@ $faker = Faker\Factory::create('ru_RU');
 $connection = new PDO('sqlite:' . __DIR__ . '/db.sqlite');
 
 $userRepository = new SqliteUserRepository($connection);
-$postRepository = new SqlitePostRepository($connection);
-$commentRepository = new SqliteCommentRepository($connection);
+$postRepository = new SqlitePostRepository($connection, $userRepository);
+$commentRepository = new SqliteCommentRepository($connection, $userRepository, $postRepository);
 
 $command = new CreateUserCommand($userRepository);
 

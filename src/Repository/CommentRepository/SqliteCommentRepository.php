@@ -4,8 +4,6 @@ namespace App\Repository\CommentRepository;
 use PDO;
 use App\Entity\UUID;
 use App\Entity\Comment\Comment;
-use App\Repository\PostRepository\SqlitePostRepository;
-use App\Repository\UserRepository\SqliteUserRepository;
 use App\Repository\PostRepository\PostRepositoryInterface;
 use App\Repository\UserRepository\UserRepositoryInterface;
 use App\Exception\CommentException\CommentNoFoundException;
@@ -13,14 +11,12 @@ use App\Repository\CommentRepository\CommentRepositoryInterface;
 
 class SqliteCommentRepository implements CommentRepositoryInterface
 {
-    private UserRepositoryInterface $userRepository;
-    private PostRepositoryInterface $postRepository;
 
     public function __construct(
-        private PDO $connection
+        private PDO $connection,
+        private UserRepositoryInterface $userRepository,
+        private PostRepositoryInterface $postRepository
     ) {
-        $this->userRepository = new SqliteUserRepository($this->connection);
-        $this->postRepository = new SqlitePostRepository($this->connection);
     }
 
     public function save(Comment $comment): void

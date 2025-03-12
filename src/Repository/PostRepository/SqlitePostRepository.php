@@ -1,7 +1,6 @@
 <?php 
 namespace App\Repository\PostRepository;
 
-use App\Repository\UserRepository\SqliteUserRepository;
 use PDO;
 use App\Entity\UUID;
 use App\Entity\Post\Post;
@@ -11,12 +10,11 @@ use App\Repository\UserRepository\UserRepositoryInterface;
 class SqlitePostRepository implements PostRepositoryInterface
 {
 
-    private UserRepositoryInterface $userRepository;
 
     public function __construct(
-        private PDO $connection
+        private PDO $connection,
+        private UserRepositoryInterface $userRepository
     ) {
-        $this->userRepository = new SqliteUserRepository($this->connection);
     }
 
     public function save(Post $post): void
