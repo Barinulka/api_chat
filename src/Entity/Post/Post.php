@@ -2,11 +2,12 @@
 namespace App\Entity\Post;
 
 use App\Entity\User\User;
+use App\Entity\UUID;
 
 class Post
 {
     public function __construct(
-        public int $id,
+        public UUID $id,
         public User $user,
         public string $title,
         public string $content,
@@ -18,12 +19,12 @@ class Post
         return sprintf('%s пишет: %s', $this->user, $this->getContent());
     }
 
-    public function getId(): int
+    public function getId(): UUID
     {
         return $this->id;
     }
 
-    public function setId(int $id): self
+    public function setId(UUID $id): self
     {
         $this->id = $id;
 

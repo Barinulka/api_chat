@@ -4,12 +4,13 @@ declare(strict_types= 1);
 
 namespace App\Entity\User;
 
+use App\Entity\UUID;
 use App\Entity\Person\Name;
 
 class User
 {
     public function __construct(
-        private int $id,
+        private UUID $id,
         private Name $userName,
         private string $login
     ) {
@@ -17,15 +18,15 @@ class User
 
     public function __tostring(): string
     {
-        return sprintf('Пользователь #%d %s с логином %s', $this->id, $this->userName, $this->login) . PHP_EOL;
+        return sprintf('Пользователь %s с логином %s', $this->userName, $this->login) . PHP_EOL;
     }
 
-    public function getId(): int
+    public function getId(): UUID
     {
         return $this->id;
     }
 
-    public function setId(int $id): self
+    public function setId(UUID $id): self
     {
         $this->id = $id;
 

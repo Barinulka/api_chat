@@ -1,13 +1,14 @@
 <?php
 namespace App\Entity\Comment;
 
+use App\Entity\UUID;
 use App\Entity\Post\Post;
 use App\Entity\User\User;
 
 class Comment
 {
     public function __construct(
-        public int $id,
+        public UUID $id,
         public User $user,
         public Post $post,
         public string $comment,
@@ -20,12 +21,12 @@ class Comment
         return sprintf('%s оставил комментарий: %s', $this->user, $this->comment);
     }
 
-    public function getId(): int
+    public function getId(): UUID
     {
         return $this->id;
     }
 
-    public function setId(int $id): self
+    public function setId(UUID $id): self
     {
         $this->id = $id;
 
