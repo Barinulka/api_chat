@@ -4,7 +4,7 @@ namespace App\Command;
 use App\Exception\Command\ArgumentException;
 final class Arguments
 {
-    private array $arguments;
+    private array $arguments = [];
 
     public function __construct(iterable $arguments)
     {
