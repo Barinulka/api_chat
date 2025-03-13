@@ -10,8 +10,3 @@ function dd(mixed $mixed, bool $stop = false): void
         die("");
     }
 }
-
-function dump(mixed $data): void
-{
-    echo $data . PHP_EOL;
-}

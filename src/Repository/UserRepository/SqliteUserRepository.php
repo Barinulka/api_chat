@@ -56,6 +56,29 @@ class SqliteUserRepository implements UserRepositoryInterface
         );
     }
 
+    public function getByLogin(string $login): User
+    {
+        $statement = $this->connection->prepare(
+            'SELECT * FROM users WHERE login = :login'
+        );
+
+        $statement->execute([
+            ':login' => $login
+        ]);
+
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        if (false === $result) {
+            throw new UserNotFoundException('Пользователь не найден', ['login' => $login]);
+        }
+
+        return new User(
+            new UUID($result['uuid']),
+            new Name($result['first_name'], $result['last_name']),
+            $result['login']
+        );
+    }
+
     private function checkUserExistance(User $user): void
     {
         $statement = $this->connection->prepare(
