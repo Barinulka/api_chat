@@ -11,4 +11,6 @@ interface UserRepositoryInterface
     public function get(UUID $uuid): User;
 
     public function getByLogin(string $login): User;
+
+    public function findAll(): array;
 }

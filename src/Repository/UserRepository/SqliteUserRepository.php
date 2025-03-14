@@ -56,6 +56,17 @@ class SqliteUserRepository implements UserRepositoryInterface
         );
     }
 
+    public function findAll(): array
+    {
+        $statement = $this->connection->prepare(
+            "SELECT * FROM users"
+        );
+
+        $statement->execute();
+
+        return $statement->fetchAll(PDO::FETCH_ASSOC) ?? [];
+    }
+
     public function getByLogin(string $login): User
     {
         $statement = $this->connection->prepare(
