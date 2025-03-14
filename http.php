@@ -1,11 +1,14 @@
 <?php
 
-use App\Exception\BaseAppException;
-use App\Exception\HttpException;
-use App\Http\Actions\User\CreateUsers;
-use App\Http\Actions\User\FindByUsername;
 use App\Http\Request;
 use App\Http\ErrorResponse;
+use App\Exception\HttpException;
+use App\Exception\BaseAppException;
+use App\Http\Actions\Post\FindByUuid;
+use App\Http\Actions\User\CreateUser;
+use App\Http\Actions\User\FindAllUsers;
+use App\Http\Actions\User\FindByUsername;
+use App\Repository\PostRepository\SqlitePostRepository;
 use App\Repository\UserRepository\SqliteUserRepository;
 
 header('Some-Header: header/text');
@@ -39,9 +42,18 @@ $routes = [
         "/users/show" => new FindByUsername(
             new SqliteUserRepository($connection)
         ),
+        "/users" => new FindAllUsers(
+            new SqliteUserRepository($connection)
+        ),
+        "/posts/show" => new FindByUuid(
+            new SqlitePostRepository(
+                $connection,
+                new SqliteUserRepository($connection)
+                )
+        )
     ], 
     'POST' => [
-        '/users/create' => new CreateUsers(
+        '/users/create' => new CreateUser(
             new SqliteUserRepository($connection)
         )
     ]
