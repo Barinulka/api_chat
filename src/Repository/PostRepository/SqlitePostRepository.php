@@ -45,6 +45,30 @@ class SqlitePostRepository implements PostRepositoryInterface
         return $this->getPost($statement, (string) $uuid);
     }
 
+    public function delete(UUID $uuid): void
+    {
+        if ($this->isPostExists($uuid)) {
+            $statement = $this->connection->prepare(
+                'DELETE FROM post WHERE uuid = :uuid'
+            );
+    
+            $statement->execute([
+                ':uuid' => (string) $uuid
+            ]);
+        }
+    }
+
+    private function isPostExists(UUID $uuid): bool
+    {
+        $post = $this->get($uuid);
+
+        if ($post) {
+            return true;
+        }
+
+        return false;
+    }
+
     private function getPost(\PDOStatement $statement, string $postUUID): Post
     {
         $result = $statement->fetch(PDO::FETCH_ASSOC);

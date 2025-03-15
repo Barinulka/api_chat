@@ -1,13 +1,17 @@
 <?php
 
+use App\Http\Actions\Comment\CreateComment;
+use App\Http\Actions\Post\DeletePost;
 use App\Http\Request;
 use App\Http\ErrorResponse;
 use App\Exception\HttpException;
 use App\Exception\BaseAppException;
+use App\Http\Actions\Post\CreatePost;
 use App\Http\Actions\Post\FindByUuid;
 use App\Http\Actions\User\CreateUser;
 use App\Http\Actions\User\FindAllUsers;
 use App\Http\Actions\User\FindByUsername;
+use App\Repository\CommentRepository\SqliteCommentRepository;
 use App\Repository\PostRepository\SqlitePostRepository;
 use App\Repository\UserRepository\SqliteUserRepository;
 
@@ -55,6 +59,26 @@ $routes = [
     'POST' => [
         '/users/create' => new CreateUser(
             new SqliteUserRepository($connection)
+        ),
+        "/posts/create" => new CreatePost(
+            new SqliteUserRepository($connection),
+            new SqlitePostRepository(
+                $connection,
+                new SqliteUserRepository($connection)
+            )
+        ),
+        "/posts/comment" => new CreateComment(
+            new SqliteCommentRepository($connection, new SqliteUserRepository($connection), new SqlitePostRepository($connection, new SqliteUserRepository($connection))),
+            new SqliteUserRepository($connection),
+            new SqlitePostRepository($connection, new SqliteUserRepository($connection))
+        )
+    ], 
+    'DELETE' => [
+        '/posts/delete' => new DeletePost(
+            new SqlitePostRepository(
+                $connection,
+                new SqliteUserRepository($connection)
+            )
         )
     ]
 ];
