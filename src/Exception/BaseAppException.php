@@ -7,16 +7,8 @@ use Exception;
 
 class BaseAppException extends Exception
 {
-    private array $data = [];
-
-    public function __construct($message = "", array $data = [], $code = 500)
+    public function __construct($message = "", $code = 500)
     {
         parent::__construct($message, $code);
-        $this->data = $data;
-    }
-
-    public function getData(): array
-    {
-        return $this->data;
     }
 }

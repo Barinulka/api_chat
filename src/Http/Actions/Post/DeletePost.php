@@ -25,16 +25,16 @@ class DeletePost implements ActionInterface
         try {
             $postUUID = new UUID($request->getQuery('uuid'));
         } catch (HttpException | InvalidArgumentException $e) {
-            return new ErrorResponse($e->getMessage());
+            return new ErrorResponse($e->getMessage(), $e->getCode());
         }
 
         try {
             $this->postRepository->delete($postUUID);
         } catch(PostNotFoundException $e) {
-            return new ErrorResponse($e->getMessage());
+            return new ErrorResponse($e->getMessage(), $e->getCode());
         }
 
-        return new SuccessResponse();
+        return new SuccessResponse([], 204);
         
     }
 }

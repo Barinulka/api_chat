@@ -32,7 +32,7 @@ class CreateUser implements ActionInterface
                 $request->getJsonBodyField("last_name"),
             );
         } catch (HttpException $e) {
-            return new ErrorResponse($e->getMessage());
+            return new ErrorResponse($e->getMessage(), $e->getCode());
         }
 
         try {
@@ -42,13 +42,16 @@ class CreateUser implements ActionInterface
                 $request->getJsonBodyField("login"),
             );
         } catch (HttpException $e) {
-            return new ErrorResponse($e->getMessage());
+            return new ErrorResponse($e->getMessage(), $e->getCode());
         }
 
         $this->userRepository->save($user);
 
-        return new SuccessResponse([
-            'uuid' => (string)$newUserUUID,
-        ]);
+        return new SuccessResponse(
+            [
+                'uuid' => (string)$newUserUUID,
+            ], 
+            201
+        );
     }
 }

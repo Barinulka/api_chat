@@ -9,8 +9,9 @@ class ErrorResponse extends Response
 
     public function __construct(
         private string $message = "Что-то пошло не так",
+        $code = 500
     ) {
-
+        $this->code = $code;
     }
 
     protected function payload(): array

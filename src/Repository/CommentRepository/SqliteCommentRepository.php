@@ -53,7 +53,7 @@ class SqliteCommentRepository implements CommentRepositoryInterface
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
         if ($result === false) {
-            throw new CommentNoFoundException("Комментарий не найден", ['uuid' => $stringUUID]);
+            throw new CommentNoFoundException("Комментарий не найден");
         }
 
         $user = $this->userRepository->get(new UUID($result['author_uuid']));

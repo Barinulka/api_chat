@@ -33,13 +33,13 @@ class Request
     {
         
         if (!array_key_exists($param, $this->get)) {
-            throw new HttpException('В запросе не найден необходимый параметр', ['param' => $param]);
+            throw new HttpException('В запросе не найден необходимый параметр');
         }
 
         $value = trim($this->get[$param]);
 
         if (empty($value)) {
-            throw new HttpException('Пустой параметр в запросе', ['param'=> $param]);
+            throw new HttpException('Пустой параметр в запросе');
         }
 
         return $value;
@@ -50,13 +50,13 @@ class Request
         $headerName = mb_strtoupper('http_' . str_replace('-','_', $header));
 
         if (!array_key_exists($headerName, $this->server)) {
-            throw new HttpException('Нет заголовка в ответе', ['param'=> $header]);
+            throw new HttpException('Нет заголовка в ответе');
         }
 
         $value = trim($this->server[$headerName]);
 
         if (empty($value)) {
-            throw new HttpException('Пустой заголовок в запросе', ['param'=> $header]);
+            throw new HttpException('Пустой заголовок в запросе');
         }
 
         return $value;

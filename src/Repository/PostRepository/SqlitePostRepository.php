@@ -74,7 +74,7 @@ class SqlitePostRepository implements PostRepositoryInterface
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
         if (false === $result) {
-            throw new PostNotFoundException('Запись не найдена', ['uuid' => $postUUID]);
+            throw new PostNotFoundException('Запись не найдена');
         }
 
         $user = $this->userRepository->get(new UUID($result['author_uuid']));

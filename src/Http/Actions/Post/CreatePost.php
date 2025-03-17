@@ -29,13 +29,13 @@ class CreatePost implements ActionInterface
         try {
             $authorUUID = new UUID($request->getJsonBodyField("author_uuid"));
         } catch (HttpException | InvalidArgumentException $e) {
-            return new ErrorResponse($e->getMessage());
+            return new ErrorResponse($e->getMessage(), $e->getCode());
         }
 
         try {
             $user = $this->userRepository->get($authorUUID);
         } catch(UserNotFoundException $e) {
-            return new ErrorResponse($e->getMessage());
+            return new ErrorResponse($e->getMessage(), $e->getCode());
         }
 
         $newPostUUID = UUID::randomUUID();
@@ -49,13 +49,16 @@ class CreatePost implements ActionInterface
             );
 
         } catch (HttpException $e) {
-            return new ErrorResponse($e->getMessage());
+            return new ErrorResponse($e->getMessage(), $e->getCode());
         }
 
         $this->postRepository->save($post);
 
-        return new SuccessResponse([
-            'uuid' => (string) $newPostUUID,
-        ]);
+        return new SuccessResponse(
+            [
+                'uuid' => (string) $newPostUUID,
+            ],
+            201
+        );
     }
 }

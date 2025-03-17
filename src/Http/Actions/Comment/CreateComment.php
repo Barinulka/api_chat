@@ -32,14 +32,15 @@ class CreateComment implements ActionInterface
             $authorUUID = new UUID($request->getJsonBodyField("author_uuid"));
             $postUUID = new UUID($request->getJsonBodyField("post_uuid"));
         } catch (HttpException | InvalidArgumentException $e) {
-            return new ErrorResponse($e->getMessage());
+            return new ErrorResponse($e->getMessage(), $e->getCode());
         }
+
 
         try {
             $user = $this->userRepository->get($authorUUID);
             $post = $this->postRepository->get($postUUID);
         } catch (UserNotFoundException | PostNotFoundException $e) {
-            return new ErrorResponse($e->getMessage());
+            return new ErrorResponse($e->getMessage(), $e->getCode());
         }
 
         $newCommentUUID = UUID::randomUUID();
@@ -53,8 +54,11 @@ class CreateComment implements ActionInterface
 
         $this->commentRepository->save($comment);
 
-        return new SuccessResponse([
-            'uuid' => (string) $newCommentUUID
-        ]);
+        return new SuccessResponse(
+            [
+                'uuid' => (string) $newCommentUUID
+            ], 
+            201
+        );
     }
 }

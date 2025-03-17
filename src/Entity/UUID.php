@@ -24,7 +24,7 @@ class UUID
     private function validateUUID(string $uuid): void
     {
         if (!uuid_is_valid($uuid)) {
-            throw new InvalidArgumentException("Неправильно сформированный UUID", ["UUID" => $uuid]);
+            throw new InvalidArgumentException("Неправильно сформированный UUID");
         }
     }
 }

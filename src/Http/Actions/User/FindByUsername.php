@@ -23,13 +23,13 @@ class FindByUsername implements ActionInterface
         try {
             $userName = $request->getQuery("username");
         } catch (HttpException $e) {
-            return new ErrorResponse($e->getMessage());
+            return new ErrorResponse($e->getMessage(), $e->getCode());
         }
 
         try {
             $user = $this->userRepository->getByLogin($userName);
         } catch (UserNotFoundException $e) {
-            return new ErrorResponse($e->getMessage());
+            return new ErrorResponse($e->getMessage(), $e->getCode());
         }
 
         return new SuccessResponse([

@@ -22,7 +22,7 @@ final class Arguments
     public function get(string $argument): string
     {
         if (!array_key_exists($argument, $this->arguments)) {
-            throw new ArgumentException('Такого аргумента не существует', ['argument' => $argument]);
+            throw new ArgumentException('Такого аргумента не существует');
         }
 
         return $this->arguments[$argument];

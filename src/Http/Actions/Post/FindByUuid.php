@@ -26,13 +26,13 @@ class FindByUuid implements ActionInterface
         try {
             $postUUID = new UUID($request->getQuery("uuid"));
         } catch (HttpException | InvalidAttributeException $e) {
-            return new ErrorResponse($e->getMessage());
+            return new ErrorResponse($e->getMessage(), $e->getCode());
         }
 
         try {
             $post = $this->postRepository->get($postUUID);
         } catch (PostNotFoundException $e) {
-            return new ErrorResponse($e->getMessage());
+            return new ErrorResponse($e->getMessage(), $e->getCode());
         }
 
         return new SuccessResponse(

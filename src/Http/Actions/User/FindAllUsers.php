@@ -21,7 +21,7 @@ class FindAllUsers implements ActionInterface {
         try {
             $users = $this->userRepository->findAll();
         } catch (HttpException $e) {
-            return new ErrorResponse($e->getMessage());
+            return new ErrorResponse($e->getMessage(), $e->getCode());
         }
 
         return new SuccessResponse([

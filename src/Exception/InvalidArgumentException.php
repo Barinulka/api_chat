@@ -7,9 +7,8 @@ class InvalidArgumentException extends BaseAppException
 {
     public function __construct(
         $message = "Недопустимый аргумент", 
-        $data = [], 
         $code = 400
     ) {
-        parent::__construct($message, $data, $code);
+        parent::__construct($message, $code);
     }
 }
