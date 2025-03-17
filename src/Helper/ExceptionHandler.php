@@ -16,6 +16,7 @@ class ExceptionHandler
         // Вспомогательные данные добавляются, если это BaseAppException
         if ($e instanceof BaseAppException) {
             $response['code'] = $e->getCode();
+            $response['message'] = $e->getMessage();
         } elseif ($e instanceof PDOException) {
             $response['code'] = 500;
             $response['message'] = 'Ошибка базы данных';

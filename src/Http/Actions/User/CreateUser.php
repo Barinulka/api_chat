@@ -2,6 +2,7 @@
 namespace App\Http\Actions\User;
 
 use App\Entity\UUID;
+use App\Exception\UserAlreadyExistanceException;
 use App\Http\Request;
 use App\Http\Response;
 use App\Entity\User\User;
@@ -45,7 +46,11 @@ class CreateUser implements ActionInterface
             return new ErrorResponse($e->getMessage(), $e->getCode());
         }
 
-        $this->userRepository->save($user);
+        try {
+            $this->userRepository->save($user);
+        } catch (HttpException | UserAlreadyExistanceException $e) {
+            return new ErrorResponse($e->getMessage(), $e->getCode());
+        }
 
         return new SuccessResponse(
             [
