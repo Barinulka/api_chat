@@ -44,9 +44,43 @@ class SqliteUserRepository implements UserRepositoryInterface
         ]);
 
         $result = $statement->fetch(PDO::FETCH_ASSOC);
+        
+        if (empty($result)) {
+            throw new UserNotFoundException('Пользователь не найден');
+        }
+
+        return new User(
+            new UUID($result['uuid']),
+            new Name($result['first_name'], $result['last_name']),
+            $result['login']
+        );
+    }
+
+    public function findAll(): array
+    {
+        $statement = $this->connection->prepare(
+            "SELECT * FROM users"
+        );
+
+        $statement->execute();
+
+        return $statement->fetchAll(PDO::FETCH_ASSOC) ?? [];
+    }
+
+    public function getByLogin(string $login): User
+    {
+        $statement = $this->connection->prepare(
+            'SELECT * FROM users WHERE login = :login'
+        );
+
+        $statement->execute([
+            ':login' => $login
+        ]);
+
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
 
         if (false === $result) {
-            throw new UserNotFoundException('Пользователь не найден', ['uuid' => (string)$uuid]);
+            throw new UserNotFoundException('Пользователь не найден');
         }
 
         return new User(
@@ -67,7 +101,7 @@ class SqliteUserRepository implements UserRepositoryInterface
         ]);
 
         if ($statement->fetch()) {
-            throw new UserAlreadyExistanceException('Пользователь с таким логином уже существует', ['login' => $user->getLogin()]);
+            throw new UserAlreadyExistanceException('Пользователь с таким логином уже существует');
         }
     }
 }

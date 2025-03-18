@@ -2,6 +2,7 @@
 namespace App\Helper;
 
 use App\Exception\BaseAppException;
+use App\Http\ErrorResponse;
 use PDOException;
 use Throwable;
 
@@ -15,7 +16,7 @@ class ExceptionHandler
         // Вспомогательные данные добавляются, если это BaseAppException
         if ($e instanceof BaseAppException) {
             $response['code'] = $e->getCode();
-            $response['data'] = $e->getData() ?? [];
+            $response['message'] = $e->getMessage();
         } elseif ($e instanceof PDOException) {
             $response['code'] = 500;
             $response['message'] = 'Ошибка базы данных';
@@ -43,5 +44,7 @@ class ExceptionHandler
         header('Content-Type: application/json; charset=utf8');
 
         echo json_encode($response, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
+
+        return new ErrorResponse();
     }
 }

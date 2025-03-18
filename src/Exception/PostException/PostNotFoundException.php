@@ -5,7 +5,7 @@ use App\Exception\BaseAppException;
 
 class PostNotFoundException extends BaseAppException
 {
-    public function __construct($message = "Не удалось найти запись", $data = [], $code = 404) {
-        parent::__construct($message, $data, $code);
+    public function __construct($message = "Не удалось найти запись", $code = 404) {
+        parent::__construct($message,$code);
     }
 }
