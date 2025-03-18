@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Actions\Comment\CreateComment;
+use App\Http\Actions\Like\CreatePostLike;
 use App\Http\Actions\Post\DeletePost;
 use App\Http\Request;
 use App\Http\ErrorResponse;
@@ -52,6 +53,7 @@ $routes = [
         '/users/create' => CreateUser::class,
         "/posts/create" => CreatePost::class,
         "/posts/comment" => CreateComment::class,
+        "/posts/like" => CreatePostLike::class
     ], 
     'DELETE' => [
         '/posts/delete' => DeletePost::class,

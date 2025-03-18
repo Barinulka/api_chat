@@ -1,6 +1,8 @@
 <?php 
 
 use App\Container\DIContainer;
+use App\Repository\LikeRepositoryInterface;
+use App\Repository\PostLikeRepository\SqlitePostLikeRepository;
 use App\Repository\PostRepository\SqlitePostRepository;
 use App\Repository\UserRepository\SqliteUserRepository;
 use App\Repository\PostRepository\PostRepositoryInterface;
@@ -30,6 +32,11 @@ $container->bind(
 $container->bind(
     CommentRepositoryInterface::class,
     SqliteCommentRepository::class
+);
+
+$container->bind(
+    LikeRepositoryInterface::class,
+    SqlitePostLikeRepository::class
 );
 
 return $container; 

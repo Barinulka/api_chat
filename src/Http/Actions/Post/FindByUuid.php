@@ -41,7 +41,7 @@ class FindByUuid implements ActionInterface
                 "title" => $post->getTitle(),
                 "content" => $post->getContent(),
                 "author" => [
-                    "uudi" => (string)$post->getUser()->getId(),
+                    "uuid" => (string)$post->getUser()->getId(),
                     "login" => $post->getUser()->getLogin(),
                     "first_name" => $post->getUser()->getUserName()->getFirstName(),
                     "last_name" => $post->getUser()->getUserName()->getLastName(),

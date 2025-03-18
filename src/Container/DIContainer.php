@@ -2,6 +2,7 @@
 namespace App\Container;
 
 use App\Exception\NotFoundException;
+use Psr\Container\ContainerInterface;
 use ReflectionClass;
 
 class DIContainer implements ContainerInterface
