@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Actions\Comment\CreateComment;
+use App\Http\Actions\Like\CreatePostLike;
 use App\Http\Actions\Post\DeletePost;
 use App\Http\Request;
 use App\Http\ErrorResponse;
@@ -17,7 +18,8 @@ use App\Repository\UserRepository\SqliteUserRepository;
 
 header('Some-Header: header/text');
 
-require_once 'vendor/autoload.php';
+$container = require __DIR__ . '/bootstrap.php';
+
 require_once 'functions.php';
 
 $connection = new PDO('sqlite:' . __DIR__ . '/db.sqlite');
@@ -43,43 +45,18 @@ try {
 
 $routes = [
     'GET' => [
-        "/users/show" => new FindByUsername(
-            new SqliteUserRepository($connection)
-        ),
-        "/users" => new FindAllUsers(
-            new SqliteUserRepository($connection)
-        ),
-        "/posts/show" => new FindByUuid(
-            new SqlitePostRepository(
-                $connection,
-                new SqliteUserRepository($connection)
-                )
-        )
+        "/users/show" => FindByUsername::class,
+        "/users" => FindAllUsers::class,
+        "/posts/show" => FindByUuid::class,
     ], 
     'POST' => [
-        '/users/create' => new CreateUser(
-            new SqliteUserRepository($connection)
-        ),
-        "/posts/create" => new CreatePost(
-            new SqliteUserRepository($connection),
-            new SqlitePostRepository(
-                $connection,
-                new SqliteUserRepository($connection)
-            )
-        ),
-        "/posts/comment" => new CreateComment(
-            new SqliteCommentRepository($connection, new SqliteUserRepository($connection), new SqlitePostRepository($connection, new SqliteUserRepository($connection))),
-            new SqliteUserRepository($connection),
-            new SqlitePostRepository($connection, new SqliteUserRepository($connection))
-        )
+        '/users/create' => CreateUser::class,
+        "/posts/create" => CreatePost::class,
+        "/posts/comment" => CreateComment::class,
+        "/posts/like" => CreatePostLike::class
     ], 
     'DELETE' => [
-        '/posts/delete' => new DeletePost(
-            new SqlitePostRepository(
-                $connection,
-                new SqliteUserRepository($connection)
-            )
-        )
+        '/posts/delete' => DeletePost::class,
     ]
 ];
 
@@ -93,7 +70,9 @@ if (!array_key_exists($path, $routes[$method])) {
     return;
 }
 
-$action = $routes[$method][$path];
+$actionClassName = $routes[$method][$path];
+
+$action = $container->get($actionClassName);
 
 try {
     $response = $action->handle($request);
